@@ -24,14 +24,21 @@ const displayBook = (book) => {
   const pages = document.createElement('td');
   const readCheck = document.createElement('td');
   const checkBox = document.createElement('input');
+  const deleteAction = document.createElement('td');
+  const link = document.createElement('a');
+
+  deleteAction.setAttribute('data-attribute', library.indexOf(book));
+  link.className = 'delete-item';
+  checkBox.type = 'checkbox';
 
   title.appendChild(document.createTextNode(book.title));
   author.appendChild(document.createTextNode(book.author));
   pages.appendChild(document.createTextNode(book.pages));
-  checkBox.type = 'checkbox';
   readCheck.appendChild(checkBox);
+  link.innerHTML = '<i class="far fa-trash-alt"></i>';
+  deleteAction.appendChild(link);
 
-  tableRow.append(title, author, pages, readCheck);
+  tableRow.append(title, author, pages, readCheck, deleteAction);
   table.appendChild(tableRow);
 };
 
@@ -40,7 +47,7 @@ const addBookToLibrary = () => {
   const author = document.querySelector('#author');
   const pages = document.querySelector('#pages');
 
-  const book = new Book(title.value, author.value, pages.value, read);
+  const book = new Book(title.value, author.value, pages.value);
   library.push(book);
 
   title.value = '';
@@ -49,6 +56,16 @@ const addBookToLibrary = () => {
 
   bookForm.classList.add('hide-form');
   displayBook(library[library.length - 1]);
+};
+
+const deleteBookfromLibrary = (e) => {
+  debugger;
+  const bookIndex = e.target.parentElement.parentElement.getAttribute('data-attribute');
+  library.splice(Number(bookIndex), 1);
+
+  if (e.target.parentElement.classList.contains('delete-item')) {
+    e.target.parentElement.parentElement.parentElement.remove();
+  }
 };
 
 const openAddBookForm = () => {
@@ -62,3 +79,4 @@ for (let i = 0; i < library.length; i += 1) {
 // event liteners
 openFormButton.addEventListener('click', openAddBookForm);
 addBookButton.addEventListener('click', addBookToLibrary);
+table.addEventListener('click', deleteBookfromLibrary);
