@@ -10,6 +10,7 @@
     "eslint": "7.x",
     "eslint-config-airbnb-base": "14.x",
     "eslint-plugin-import": "2.x",
+    "ngrok": "^4.0.1",
     "stylelint": "13.x",
     "stylelint-config-standard": "21.x",
     "stylelint-csstree-validator": "1.x",
