@@ -1,8 +1,7 @@
-const library = [];
 const addBookButton = document.querySelector('.addBook');
 const openFormButton = document.querySelector('.addNewBook');
 const bookForm = document.querySelector('.form');
-const table = document.querySelector('table');
+const table = document.querySelector('tbody');
 
 function Book(title, author, pages, read = false) {
   this.title = title;
@@ -12,9 +11,18 @@ function Book(title, author, pages, read = false) {
   this.info = () => `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`;
 }
 
-for (let i = 0; i < 10; i += 1) {
-  const booook = new Book(`title${i}`, `author${i}`, (i*2)+85+i);
-  library.push(booook);
+let library = [];
+const setLibraryStorage = () => localStorage.setItem('library', JSON.stringify(library));
+const getLibraryStorage = () => JSON.parse(localStorage.getItem('library'));
+
+if (getLibraryStorage() === null) {
+  library.push(new Book('Offerkind', 'Rob Ruggenberg', 294));
+  library.push(new Book('IJzerkop', 'Rob Jean-Claude van Rijckeghem', 367));
+  library.push(new Book('Meerminnen Verdrinken Niet', 'Saskia Maaskant', 213));
+  library.push(new Book('Trigo limpio', 'Juan Manuel Gil', 392));
+  library.push(new Book('Confessions on the 7:45', 'Lisa Unger ', 368));
+} else {
+  library = getLibraryStorage();
 }
 
 const displayBook = (book) => {
@@ -28,6 +36,7 @@ const displayBook = (book) => {
   const link = document.createElement('a');
 
   deleteAction.setAttribute('data-attribute', library.indexOf(book));
+  checkBox.setAttribute('data-attribute', library.indexOf(book));
   link.className = 'delete-item';
   checkBox.type = 'checkbox';
 
@@ -42,6 +51,23 @@ const displayBook = (book) => {
   table.appendChild(tableRow);
 };
 
+for (let i = 0; i < library.length; i += 1) {
+  displayBook(library[i]);
+}
+
+const clearTable = () => {
+  while (table.firstChild) {
+    table.removeChild(table.firstChild);
+  }
+};
+
+const updateTable = () => {
+  library = getLibraryStorage();
+  for (let i = 0; i < library.length; i += 1) {
+    displayBook(library[i]);
+  }
+};
+
 const addBookToLibrary = () => {
   const title = document.querySelector('#title');
   const author = document.querySelector('#author');
@@ -49,6 +75,7 @@ const addBookToLibrary = () => {
 
   const book = new Book(title.value, author.value, pages.value);
   library.push(book);
+  setLibraryStorage();
 
   title.value = '';
   author.value = '';
@@ -59,22 +86,16 @@ const addBookToLibrary = () => {
 };
 
 const deleteBookfromLibrary = (e) => {
-  debugger;
   const bookIndex = e.target.parentElement.parentElement.getAttribute('data-attribute');
   library.splice(Number(bookIndex), 1);
-
-  if (e.target.parentElement.classList.contains('delete-item')) {
-    e.target.parentElement.parentElement.parentElement.remove();
-  }
+  setLibraryStorage();
+  clearTable();
+  updateTable();
 };
 
 const openAddBookForm = () => {
   bookForm.classList.remove('hide-form');
 };
-
-for (let i = 0; i < library.length; i += 1) {
-  displayBook(library[i]);
-}
 
 // event liteners
 openFormButton.addEventListener('click', openAddBookForm);
