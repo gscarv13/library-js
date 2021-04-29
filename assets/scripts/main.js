@@ -25,6 +25,14 @@ if (getLibraryStorage() === null) {
   library = getLibraryStorage();
 }
 
+const checkRead = (book, checkBox) => {
+  if (book.read === true) {
+    checkBox.checked = true;
+  } else {
+    checkBox.checked = false;
+  }
+};
+
 const displayBook = (book) => {
   const tableRow = document.createElement('tr');
   const title = document.createElement('td');
@@ -36,9 +44,10 @@ const displayBook = (book) => {
   const link = document.createElement('a');
 
   deleteAction.setAttribute('data-attribute', library.indexOf(book));
-  checkBox.setAttribute('data-attribute', library.indexOf(book));
+  checkBox.setAttribute('data-index', library.indexOf(book));
   link.className = 'delete-item';
   checkBox.type = 'checkbox';
+  checkRead(book, checkBox);
 
   title.appendChild(document.createTextNode(book.title));
   author.appendChild(document.createTextNode(book.author));
@@ -85,19 +94,37 @@ const addBookToLibrary = () => {
   displayBook(library[library.length - 1]);
 };
 
-const deleteBookfromLibrary = (e) => {
-  const bookIndex = e.target.parentElement.parentElement.getAttribute('data-attribute');
-  library.splice(Number(bookIndex), 1);
-  setLibraryStorage();
-  clearTable();
-  updateTable();
+const deleteBookFromLibrary = (e) => {
+  if (e.target.parentElement.classList.contains('delete-item')) {
+    const bookIndex = e.target.parentElement.parentElement.getAttribute('data-attribute');
+    library.splice(Number(bookIndex), 1);
+    setLibraryStorage();
+    clearTable();
+    updateTable();
+  }
 };
 
 const openAddBookForm = () => {
   bookForm.classList.remove('hide-form');
 };
 
+const updateRead = (e) => {
+  library = getLibraryStorage();
+  if (e.target.getAttribute('data-index')) {
+    const bookIndex = e.target.getAttribute('data-index');
+    const book = library[bookIndex];
+
+    if (e.target.checked === true) {
+      book.read = true;
+    } else if (e.target.checked === false) {
+      book.read = false;
+    }
+    setLibraryStorage();
+  }
+};
+
 // event liteners
 openFormButton.addEventListener('click', openAddBookForm);
 addBookButton.addEventListener('click', addBookToLibrary);
-table.addEventListener('click', deleteBookfromLibrary);
+table.addEventListener('click', deleteBookFromLibrary);
+table.addEventListener('click', updateRead);
