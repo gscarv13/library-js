@@ -82,16 +82,18 @@ const addBookToLibrary = () => {
   const author = document.querySelector('#author');
   const pages = document.querySelector('#pages');
 
-  const book = new Book(title.value, author.value, pages.value);
-  library.push(book);
-  setLibraryStorage();
+  if (title.value !== '' && author.value !== '' && pages.value !== '') {
+    const book = new Book(title.value, author.value, pages.value);
+    library.push(book);
+    setLibraryStorage();
 
-  title.value = '';
-  author.value = '';
-  pages.value = '';
+    title.value = '';
+    author.value = '';
+    pages.value = '';
 
-  bookForm.classList.add('hide-form');
-  displayBook(library[library.length - 1]);
+    bookForm.classList.add('hide-form');
+    displayBook(library[library.length - 1]);
+  }
 };
 
 const deleteBookFromLibrary = (e) => {
