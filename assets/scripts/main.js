@@ -41,6 +41,7 @@ const displayBook = (book) => {
   const readCheck = document.createElement('td');
   const checkBox = document.createElement('input');
   const deleteAction = document.createElement('td');
+  const icon = document.createElement('i');
   const link = document.createElement('a');
 
   deleteAction.setAttribute('data-attribute', library.indexOf(book));
@@ -53,7 +54,8 @@ const displayBook = (book) => {
   author.appendChild(document.createTextNode(book.author));
   pages.appendChild(document.createTextNode(book.pages));
   readCheck.appendChild(checkBox);
-  link.innerHTML = '<i class="far fa-trash-alt"></i>';
+  icon.className = 'far fa-trash-alt';
+  link.appendChild(icon);
   deleteAction.appendChild(link);
 
   tableRow.append(title, author, pages, readCheck, deleteAction);
