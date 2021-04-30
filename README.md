@@ -1,6 +1,6 @@
 # Javascript Library
 
-> This project was built to practice using Object contructors in Javascript
+> This project was built to practice using Object constructors and local storage in Javascript
 
 ## Built With
 
