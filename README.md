@@ -2,6 +2,8 @@
 
 > This project was built to practice using Object constructors and local storage in Javascript
 
+![](assets/images/ss.png)
+
 ## Built With
 
 - Javascript
