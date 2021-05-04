@@ -3,23 +3,29 @@ const openFormButton = document.querySelector('.addNewBook');
 const bookForm = document.querySelector('.form');
 const table = document.querySelector('tbody');
 
-const Book = (title, author, pages, read = false) => {
-  const info = () => `${title} by ${author}, ${pages} pages, ${read}`;
-  return {
-    title, author, pages, read, info,
-  };
-};
+class Book {
+  constructor(title, author, pages, read = false) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
+
+  info() {
+    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read}`;
+  }
+}
 
 let library = [];
 const setLibraryStorage = () => localStorage.setItem('library', JSON.stringify(library));
 const getLibraryStorage = () => JSON.parse(localStorage.getItem('library'));
 
 if (getLibraryStorage() === null) {
-  library.push(Book('Offerkind', 'Rob Ruggenberg', 294));
-  library.push(Book('IJzerkop', 'Rob Jean-Claude van Rijckeghem', 367));
-  library.push(Book('Meerminnen Verdrinken Niet', 'Saskia Maaskant', 213));
-  library.push(Book('Trigo limpio', 'Juan Manuel Gil', 392));
-  library.push(Book('Confessions on the 7:45', 'Lisa Unger ', 368));
+  library.push(new Book('Offerkind', 'Rob Ruggenberg', 294));
+  library.push(new Book('IJzerkop', 'Rob Jean-Claude van Rijckeghem', 367));
+  library.push(new Book('Meerminnen Verdrinken Niet', 'Saskia Maaskant', 213));
+  library.push(new Book('Trigo limpio', 'Juan Manuel Gil', 392));
+  library.push(new Book('Confessions on the 7:45', 'Lisa Unger ', 368));
 } else {
   library = getLibraryStorage();
 }
@@ -84,7 +90,7 @@ const addBookToLibrary = () => {
   const pages = document.querySelector('#pages');
 
   if (title.value !== '' && author.value !== '' && pages.value !== '') {
-    const book = Book(title.value, author.value, pages.value);
+    const book = new Book(title.value, author.value, pages.value);
     library.push(book);
     setLibraryStorage();
 
